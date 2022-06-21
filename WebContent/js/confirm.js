@@ -19,3 +19,12 @@ function test1(b) {
 		return false;
 	}
 }
+
+function test2(c) {
+	var checked = window.confirm("ユーザID:" + c.getAttribute("data-delete") + "を削除します。\nよろしいでしょうか？");
+	if(checked == true){
+		return true;
+	} else {
+		return false;
+	}
+}

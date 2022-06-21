@@ -17,6 +17,9 @@
 <a href="../../searchAllServlet">
     <button type="button">商品</button>
 </a>
+<a href="../../buyedSearchServlet">
+    <button type="button">購入済み商品閲覧</button>
+</a>
 <a href="../login/login.jsp">
     <button type="button">ログアウト</button>
 </a>

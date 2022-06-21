@@ -104,6 +104,45 @@ public class ItemDAO extends DAO {
 		return itemInfoBean;
 	}
 
+	public ItemInfoBean adminSearchItem(String name) throws Exception {
+
+		ItemInfoBean itemInfoBean = new ItemInfoBean();
+
+		Connection con = getConnection();
+		String sql = "select * from "
+				+ ItemInfoParameter.TABLE
+				+ " where "
+				+ ItemInfoParameter.NAME + " like ? && "
+				+ ItemInfoParameter.ITEM_STATUS + " = 'enable'"
+				;
+
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setString(1, "%" + name + "%");
+
+		ResultSet rs = st.executeQuery();
+
+		ItemBean itemBean = null;
+		while(rs.next()) {
+			itemBean = new ItemBean(
+					rs.getString(ItemInfoParameter.ITEM_ID),
+					rs.getString(ItemInfoParameter.USER_ID),
+					rs.getString(ItemInfoParameter.NAME),
+					rs.getString(ItemInfoParameter.ORIGIN),
+					rs.getString(ItemInfoParameter.UNIT),
+					rs.getInt(ItemInfoParameter.PRICE),
+					rs.getString(ItemInfoParameter.EXPLANATION),
+					rs.getString(ItemInfoParameter.IMAGE),
+					rs.getString(ItemInfoParameter.ITEM_STATUS)
+					);
+			itemInfoBean.addItem(itemBean);
+		}
+		rs.close();
+		st.close();
+		con.close();
+
+		return itemInfoBean;
+	}
+
 	public ItemInfoBean searchItemByAllId(String name) throws Exception {
 
 		ItemInfoBean itemInfoBean = new ItemInfoBean();

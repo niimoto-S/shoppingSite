@@ -44,5 +44,7 @@ public class BuyedDAO extends DAO{
 
 		return infoBean;
 	}
+	
+	
 
 }

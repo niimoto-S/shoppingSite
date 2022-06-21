@@ -6,6 +6,7 @@ public class UserRoleParameter {
 	public static final String TABLE = "USER_ROLE_NIIMOTO";
 
 	//SQL
+	public static final String USER_ID = "ID";
 	public static final String PASSWORD = "PASSWORD";
 	public static final String ROLE = "ROLE";
 	public static final String ACCOUNT_STATUS = "ACCOUNT_STATUS";
