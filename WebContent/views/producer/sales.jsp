@@ -24,19 +24,19 @@
 <% BuyedInfoBean infoBean = (BuyedInfoBean) session.getAttribute("salesBean"); %>
 <%if(infoBean.getArraySize() > 0) { %>
 
-	<table border="1">
+	<table border="1" class="sorttbl" id="myTable">
 		<thead>
 			<tr>
-				<td>商品ID</td>
-				<td>消費者ID</td>
-				<td>価格</td>
-				<td>数量</td>
-				<td>小計</td>
+				<td onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(1)')">商品ID<i class="fa fa-sort"></i></td>
+				<td onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(2)')">消費者ID<i class="fa fa-sort"></i></td>
+				<td onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(3)')">価格<i class="fa fa-sort"></i></td>
+				<td onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(4)')">数量<i class="fa fa-sort"></i></td>
+				<td onclick="w3.sortHTML('#myTable','.item', 'td:nth-child(5)')">小計<i class="fa fa-sort"></i></td>
 			</tr>
 		</thead>
 		<tbody>
 			<% for(BuyedBean bean : infoBean.getBuyedBeanArray()) { %>
-			<tr>
+			<tr class="item">
 				<td><%=bean.getItemId() %></td>
 				<td><%=bean.getConsumerId() %></td>
 				<td><%=bean.getPrice() %></td>
@@ -52,6 +52,6 @@
 	売り上げ情報は存在しません。
 <% } %>
 
-
+<script type="text/javascript" src="../../js/w3.js"></script>
 </body>
 </html>
