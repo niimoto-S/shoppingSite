@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import jp.co.aforce.beans.ItemBean;
+import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.ItemInfoParameter;
 import jp.co.aforce.parameters.MessageParameter;
@@ -48,63 +49,69 @@ public class UpdateItem2Servlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-
-		String itemName = request.getParameter("item_name");
-		String origin = request.getParameter("origin");
-		String unit = request.getParameter("unit");
-		String price = request.getParameter("price");
-		String explanation = request.getParameter("explanation");
-		//エラー発生時、値を所持したまま戻るため、値を入れたままにする処理
-		ItemBean itemBean = (ItemBean) session.getAttribute("updateItemBean");
-		itemBean.setItemName(itemName);
-		itemBean.setOrigin(origin);
-		itemBean.setUnit(unit);
-		try {
-			itemBean.setPrice(Integer.parseInt(price));
-		} catch (Exception e) {itemBean.setPrice(0);}
-		itemBean.setExplanation(explanation);
-
-		NullCheck check = new NullCheck();
-		String c = check.itemCheck(itemName, origin, unit, price, explanation);
-		if(!c.equals("")) {
-			session.setAttribute("updateItemMessage", c + MessageParameter.MESSAGE);
-			session.setAttribute("updateItemBean", itemBean);
-			response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+		if(roleBean == null || !roleBean.getRole().equals("producer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
 		} else {
-			Part part = request.getPart("image");
-			if(part.getSize() == 0) {
-				session.setAttribute("updateItemMessage", ItemInfoParameter.IMAGE_STR + MessageParameter.MESSAGE);
+			String itemName = request.getParameter("item_name");
+			String origin = request.getParameter("origin");
+			String unit = request.getParameter("unit");
+			String price = request.getParameter("price");
+			String explanation = request.getParameter("explanation");
+			//エラー発生時、値を所持したまま戻るため、値を入れたままにする処理
+			ItemBean itemBean = (ItemBean) session.getAttribute("updateItemBean");
+			itemBean.setItemName(itemName);
+			itemBean.setOrigin(origin);
+			itemBean.setUnit(unit);
+			try {
+				itemBean.setPrice(Integer.parseInt(price));
+			} catch (Exception e) {itemBean.setPrice(0);}
+			itemBean.setExplanation(explanation);
+
+			NullCheck check = new NullCheck();
+			String c = check.itemCheck(itemName, origin, unit, price, explanation);
+			if(!c.equals("")) {
+				session.setAttribute("updateItemMessage", c + MessageParameter.MESSAGE);
 				session.setAttribute("updateItemBean", itemBean);
 				response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
 			} else {
-				if(part.getContentType().equals("image/png") || part.getContentType().equals("image/jpeg")) {
-					String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-					String path = getServletContext().getRealPath("/img");
-					//画像の保存
-					part.write(path+File.separator+fileName);
-					//beanに情報を投げる
-					itemBean.setImageName(fileName);
-					//DAOでDBに登録
-					ItemDAO itemDAO = new ItemDAO();
-					try {
-						itemDAO.updateItem(itemBean);
-						session.setAttribute("updateItemMessage", MessageParameter.UPDATE_COMPLETE);
-						response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
-					} catch (Exception e) {
-						session.setAttribute("updateItemMessage", MessageParameter.SYSTEM_ERROR);
-						session.setAttribute("updateItemBean", itemBean);
-						response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
-						e.printStackTrace();
-					}
-				} else {
-					session.setAttribute("updateItemMessage", ItemInfoParameter.IMAGE_CONTENT_TYPE_STR);
+				Part part = request.getPart("image");
+				if(part.getSize() == 0) {
+					session.setAttribute("updateItemMessage", ItemInfoParameter.IMAGE_STR + MessageParameter.MESSAGE);
 					session.setAttribute("updateItemBean", itemBean);
 					response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+				} else {
+					if(part.getContentType().equals("image/png") || part.getContentType().equals("image/jpeg")) {
+						String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+						String path = getServletContext().getRealPath("/img");
+						//画像の保存
+						part.write(path+File.separator+fileName);
+						//beanに情報を投げる
+						itemBean.setImageName(fileName);
+						//DAOでDBに登録
+						ItemDAO itemDAO = new ItemDAO();
+						try {
+							itemDAO.updateItem(itemBean);
+							session.setAttribute("updateItemMessage", MessageParameter.UPDATE_COMPLETE);
+							response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+						} catch (Exception e) {
+							session.setAttribute("updateItemMessage", MessageParameter.SYSTEM_ERROR);
+							session.setAttribute("updateItemBean", itemBean);
+							response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+							e.printStackTrace();
+						}
+					} else {
+						session.setAttribute("updateItemMessage", ItemInfoParameter.IMAGE_CONTENT_TYPE_STR);
+						session.setAttribute("updateItemBean", itemBean);
+						response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+					}
+
+
 				}
-
-
 			}
 		}
+
+
 	}
 
 }

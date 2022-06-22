@@ -2,32 +2,27 @@ package jp.co.aforce.beans;
 
 import java.io.Serializable;
 
-public class MyBasketBean implements Serializable {
+public class BuyedBeanEx implements Serializable {
 
-	private int itemId;
 	private String itemName;
 	private String origin;
 	private int quantity;
-	private String unit;
+	private String  unit;
 	private int price;
 	private String explanation;
 	private String image;
-	private String producerId;
 
-	public MyBasketBean() {}
+	public BuyedBeanEx() {}
 
-	public MyBasketBean(
-			int itemId,
+	public BuyedBeanEx(
 			String itemName,
 			String origin,
 			int quantity,
-			String unit,
+			String  unit,
 			int price,
 			String explanation,
-			String image,
-			String producerId
+			String image
 			) {
-		this.itemId = itemId;
 		this.itemName = itemName;
 		this.origin = origin;
 		this.quantity = quantity;
@@ -35,15 +30,8 @@ public class MyBasketBean implements Serializable {
 		this.price = price;
 		this.explanation = explanation;
 		this.image = image;
-		this.producerId = producerId;
 	}
 
-	public int getItemId() {
-		return itemId;
-	}
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
-	}
 	public String getItemName() {
 		return itemName;
 	}
@@ -86,11 +74,7 @@ public class MyBasketBean implements Serializable {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public String getProducerId() {
-		return producerId;
-	}
-	public void setProducerId(String producerId) {
-		this.producerId = producerId;
-	}
+
+
 
 }

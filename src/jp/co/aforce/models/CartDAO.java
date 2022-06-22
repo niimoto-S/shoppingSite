@@ -3,6 +3,7 @@ package jp.co.aforce.models;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import jp.co.aforce.beans.CartBean;
 import jp.co.aforce.beans.MyBasketBean;
@@ -13,7 +14,7 @@ import jp.co.aforce.parameters.ItemInfoParameter;
 
 public class CartDAO extends DAO {
 
-	public void addCart(CartBean cartBean) throws Exception {
+	public void addCart(CartBean cartBean) throws SQLException, Exception {
 		Connection con = getConnection();
 		String sql = "insert into "
 				+ CartParameter.TABLE

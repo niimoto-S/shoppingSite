@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
@@ -32,26 +33,32 @@ public class SearchAllServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String itemName = "";
-		try {
-			itemName = request.getParameter("itemName");
-			if(itemName == null) {
+		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+		if(roleBean == null || !roleBean.getRole().equals("consumer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			String itemName = "";
+			try {
+				itemName = request.getParameter("itemName");
+				if(itemName == null) {
+					itemName = "";
+				}
+			} catch (Exception e) {
 				itemName = "";
 			}
-		} catch (Exception e) {
-			itemName = "";
+
+			ItemDAO itemDAO = new ItemDAO();
+
+			try {
+				session.setAttribute("itemInfoBean", itemDAO.searchItemByAllId(itemName));
+				response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+			} catch (Exception e) {
+				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
+				response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+				e.printStackTrace();
+			}
 		}
 
-		ItemDAO itemDAO = new ItemDAO();
-
-		try {
-			session.setAttribute("itemInfoBean", itemDAO.searchItemByAllId(itemName));
-			response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
-		} catch (Exception e) {
-			session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-			response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
-			e.printStackTrace();
-		}
 	}
 
 	/**

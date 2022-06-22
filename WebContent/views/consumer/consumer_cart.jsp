@@ -11,6 +11,15 @@
 <title>カート</title>
 </head>
 <body>
+
+<%@page import="jp.co.aforce.beans.RoleBean"%>
+<%
+RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+if(roleBean == null || !roleBean.getRole().equals("consumer")) {
+	response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+}
+%>
+
 <% int total = 0; %>
 <%try{ %>
 	<% if(session.getAttribute("cartMessage").toString() != "") { %>

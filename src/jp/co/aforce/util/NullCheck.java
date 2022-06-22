@@ -22,6 +22,7 @@ public class NullCheck {
 			String phoneNumber,
 			String mailAddress
 			) {
+		MailCheck check = new MailCheck();
 
 		if(lastName.equals("")) {
 			return UserInfoParameter.LAST_NAME_STR;
@@ -75,6 +76,8 @@ public class NullCheck {
 		}
 		if(mailAddress.equals("")) {
 			return UserInfoParameter.MAIL_ADDRESS_STR;
+		} else if (!check.check(mailAddress)) {
+			return UserInfoParameter.MAIL_ADDRESS_STR2;
 		}
 
 		return "";

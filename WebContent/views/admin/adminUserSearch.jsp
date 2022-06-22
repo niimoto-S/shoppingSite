@@ -11,6 +11,14 @@
 </head>
 <body>
 
+<%@page import="jp.co.aforce.beans.RoleBean"%>
+<%
+RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+if(roleBean == null || !roleBean.getRole().equals("admin")) {
+	response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+}
+%>
+
 <%try{ %>
 	<% if(session.getAttribute("adminSearchUserMessage").toString() != "") { %>
 	<p><h3 style="color: red"><%=session.getAttribute("adminSearchUserMessage") %></h3>

@@ -9,6 +9,14 @@
 </head>
 <body>
 
+<%@page import="jp.co.aforce.beans.RoleBean"%>
+<%
+RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+if(roleBean == null || !roleBean.getRole().equals("producer")) {
+	response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+}
+%>
+
 おかえりなさい、${sessionScope.userName}さん！
 <p>
 <a href="../../searchItemServlet">

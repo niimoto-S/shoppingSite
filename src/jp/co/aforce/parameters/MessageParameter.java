@@ -11,6 +11,7 @@ public class MessageParameter {
 	public static final String SYSTEM_ERROR = "システムエラー。";
 	public static final String DISABLE_ERROR = "削除されたユーザです。";
 	public static final String LOGIN_ERROR = "ログインに失敗しました。";
+	public static final String ADD_CART_ERROR = "既にカートに登録されています。";
 
 
 }

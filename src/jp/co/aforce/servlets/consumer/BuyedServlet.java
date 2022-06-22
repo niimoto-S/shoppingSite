@@ -42,20 +42,25 @@ public class BuyedServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-		CartDAO cartDAO = new CartDAO();
 		RoleBean roleBean = (RoleBean)session.getAttribute("userInfo");
-		try {
-			cartDAO.buyItems((MyBasketInfoBean)session.getAttribute("myBasket"), roleBean.getId());
-			session.setAttribute("cartMessage", MessageParameter.BUY_CART_COMPLETE);
+		if(roleBean == null || !roleBean.getRole().equals("consumer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
 			request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-			response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
-		} catch (Exception e) {
-			session.setAttribute("cartMessage", MessageParameter.SYSTEM_ERROR);
-			request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-			response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
-			e.printStackTrace();
+			CartDAO cartDAO = new CartDAO();
+			try {
+				cartDAO.buyItems((MyBasketInfoBean)session.getAttribute("myBasket"), roleBean.getId());
+				session.setAttribute("cartMessage", MessageParameter.BUY_CART_COMPLETE);
+				request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
+				response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
+			} catch (Exception e) {
+				session.setAttribute("cartMessage", MessageParameter.SYSTEM_ERROR);
+				request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
+				response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 }

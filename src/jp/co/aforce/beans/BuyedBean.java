@@ -1,6 +1,8 @@
 package jp.co.aforce.beans;
 
-public class BuyedBean {
+import java.io.Serializable;
+
+public class BuyedBean implements Serializable {
 
 	private int id;
 	private int itemId;

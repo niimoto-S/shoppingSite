@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
@@ -41,16 +42,19 @@ public class UpdateItemServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int itemId = Integer.parseInt(request.getParameter("updateItem"));
 		HttpSession session = request.getSession();
-		ItemDAO itemDAO = new ItemDAO();
-		try {
-			session.setAttribute("updateItemBean", itemDAO.updateItemById(itemId));
-			response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
-		} catch (Exception e) {
-			session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-			response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
-			e.printStackTrace();
+		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+		if(roleBean == null || !roleBean.getRole().equals("producer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			ItemDAO itemDAO = new ItemDAO();
+			try {
+				session.setAttribute("updateItemBean", itemDAO.updateItemById(itemId));
+				response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+			} catch (Exception e) {
+				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
+				response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
+				e.printStackTrace();
+			}
 		}
-
 	}
-
 }

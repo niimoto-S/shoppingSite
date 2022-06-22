@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.CartDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
@@ -40,20 +41,26 @@ public class UpdateCartServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int itemId = Integer.parseInt(request.getParameter("updateItem"));
-		String quantity = request.getParameter("quantity");
-		if(!quantity.equals("")) {
-			int quantityInt = Integer.parseInt(quantity);
-			CartDAO cartDAO = new CartDAO();
-			try {
-				cartDAO.updateCart(itemId, quantityInt);
-				request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-				session.setAttribute("cartMessage", MessageParameter.UPDATE_COMPLETE);
-				response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
-			} catch (Exception e) {
-				e.printStackTrace();
+		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+		if(roleBean == null || !roleBean.getRole().equals("consumer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			int itemId = Integer.parseInt(request.getParameter("updateItem"));
+			String quantity = request.getParameter("quantity");
+			if(!quantity.equals("")) {
+				int quantityInt = Integer.parseInt(quantity);
+				CartDAO cartDAO = new CartDAO();
+				try {
+					cartDAO.updateCart(itemId, quantityInt);
+					request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
+					session.setAttribute("cartMessage", MessageParameter.UPDATE_COMPLETE);
+					response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
+
 	}
 
 }

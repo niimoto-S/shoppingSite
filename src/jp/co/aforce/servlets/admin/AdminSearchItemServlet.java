@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
@@ -32,26 +33,32 @@ public class AdminSearchItemServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String itemName;
-		try {
-			itemName = request.getParameter("itemName");
-			if(itemName == null) {
+		HttpSession session = request.getSession();
+		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
+		if(bean == null || !bean.getRole().equals("admin")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			String itemName;
+			try {
+				itemName = request.getParameter("itemName");
+				if(itemName == null) {
+					itemName = "";
+				}
+			} catch (Exception e) {
 				itemName = "";
 			}
-		} catch (Exception e) {
-			itemName = "";
+			ItemDAO itemDAO = new ItemDAO();
+			try {
+				session.setAttribute("itemInfoBean", itemDAO.adminSearchItem(itemName));
+				session.setAttribute("itemName", itemName);
+				response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
+			} catch (Exception e) {
+				session.setAttribute("adminSearchItemMessage", MessageParameter.SYSTEM_ERROR);
+				response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
+				e.printStackTrace();
+			}
 		}
-		HttpSession session = request.getSession();
-		ItemDAO itemDAO = new ItemDAO();
-		try {
-			session.setAttribute("itemInfoBean", itemDAO.adminSearchItem(itemName));
-			session.setAttribute("itemName", itemName);
-			response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
-		} catch (Exception e) {
-			session.setAttribute("adminSearchItemMessage", MessageParameter.SYSTEM_ERROR);
-			response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
-			e.printStackTrace();
-		}
+
 
 
 	}

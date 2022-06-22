@@ -33,28 +33,30 @@ public class SearchItemServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String keyword = "";
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
-		String userId = roleBean.getId();
-		try {
-			keyword = request.getParameter("itemWord");
-			if(keyword == null || keyword.equals("")) {
-				keyword = "";
+		if(roleBean == null || !roleBean.getRole().equals("producer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			String keyword = "";
+			String userId = roleBean.getId();
+			try {
+				keyword = request.getParameter("itemWord");
+				if(keyword == null || keyword.equals("")) {
+					keyword = "";
+				}
+			} catch (Exception e) {}
+
+			ItemDAO itemDAO = new ItemDAO();
+
+			try {
+				session.setAttribute("itemInfoBean", itemDAO.searchItem(keyword, userId));
+				response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
+			} catch (Exception e) {
+				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
+				response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
+				e.printStackTrace();
 			}
-		} catch (Exception e) {}
-
-		ItemDAO itemDAO = new ItemDAO();
-
-		try {
-			session.setAttribute("itemInfoBean", itemDAO.searchItem(keyword, userId));
-			response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
-		} catch (Exception e) {
-			session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-			response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
-			e.printStackTrace();
 		}
-
-
 	}
 
 	/**

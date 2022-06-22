@@ -26,5 +26,6 @@ public class UserInfoParameter {
 	public static final String DAY_STR = "生年月日_日";
 	public static final String PHONE_NUMBER_STR = "電話番号";
 	public static final String MAIL_ADDRESS_STR = "メールアドレス";
+	public static final String MAIL_ADDRESS_STR2 = "メールアドレスの入力に誤りがあります。";
 
 }

@@ -1,6 +1,7 @@
 package jp.co.aforce.servlets.consumer;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,35 +45,47 @@ public class AddCartServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String  itemId = request.getParameter("addItem");
-		String quantity = request.getParameter("quantity");
-		RoleBean roleBean = (RoleBean)session.getAttribute("userInfo");
-		String consumerId = roleBean.getId();
-		ItemDAO itemDAO = new ItemDAO();
-
-		NullCheck check = new NullCheck();
-		String c = check.cart(itemId, quantity);
-		if(!c.equals("")) {
-			session.setAttribute("searchItemMessage", c + MessageParameter.MESSAGE);
-			response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
+		if(bean == null || !bean.getRole().equals("consumer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
 		} else {
-			int itemIdInt = Integer.parseInt(itemId);
-			int quantityInt = Integer.parseInt(quantity);
-			try {
-				String producerId = itemDAO.findProducerIdByItemId(itemIdInt);
-				CartBean cartBean = new CartBean(itemIdInt, producerId, consumerId, quantityInt);
-				CartDAO dao = new CartDAO();
-				dao.addCart(cartBean);
-				request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-				session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_COMPLETE);
-				response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+			String  itemId = request.getParameter("addItem");
+			String quantity = request.getParameter("quantity");
+			RoleBean roleBean = (RoleBean)session.getAttribute("userInfo");
+			String consumerId = roleBean.getId();
+			ItemDAO itemDAO = new ItemDAO();
 
-			} catch (Exception e) {
-				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
+			NullCheck check = new NullCheck();
+			String c = check.cart(itemId, quantity);
+			if(!c.equals("")) {
+				session.setAttribute("searchItemMessage", c + MessageParameter.MESSAGE);
 				response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
-				e.printStackTrace();
+			} else {
+				int itemIdInt = Integer.parseInt(itemId);
+				int quantityInt = Integer.parseInt(quantity);
+				try {
+					String producerId = itemDAO.findProducerIdByItemId(itemIdInt);
+					CartBean cartBean = new CartBean(itemIdInt, producerId, consumerId, quantityInt);
+					CartDAO dao = new CartDAO();
+					dao.addCart(cartBean);
+					request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
+					session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_COMPLETE);
+					response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+				} catch (SQLException e) {
+					if(e.getErrorCode() == 1062) {
+						session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_ERROR);
+						response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+					} else {
+						e.getNextException();
+					}
+				} catch (Exception e) {
+					session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
+					response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+					e.printStackTrace();
+				}
 			}
 		}
+
 
 
 	}

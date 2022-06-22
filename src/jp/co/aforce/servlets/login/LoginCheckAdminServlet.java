@@ -1,4 +1,4 @@
-package jp.co.aforce.servlets.consumer;
+package jp.co.aforce.servlets.login;
 
 import java.io.IOException;
 
@@ -10,21 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import jp.co.aforce.beans.RoleBean;
-import jp.co.aforce.models.CartDAO;
 
 /**
- * Servlet implementation class MyCartInfoServlet
+ * Servlet implementation class LoginCheckAdminServlet
  */
-//遷移先が存在せずインクルードでのみ呼び出されることを想定したクラスである。
-//また現在のカート情報を逐次更新してセッションに保持することが目的である
-@WebServlet("/myCartInfoServlet")
-public class MyCartInfoServlet extends HttpServlet {
+@WebServlet("/loginCheckAdminServlet")
+public class LoginCheckAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MyCartInfoServlet() {
+    public LoginCheckAdminServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,6 +30,7 @@ public class MyCartInfoServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 	/**
@@ -40,19 +38,12 @@ public class MyCartInfoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		RoleBean roleBean = (RoleBean)session.getAttribute("userInfo");
-		if(roleBean == null || !roleBean.getRole().equals("consumer")) {
+		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+		if(roleBean == null || !roleBean.getRole().equals("producer")) {
 			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
 		} else {
-			String userId = roleBean.getId();
-			CartDAO dao = new CartDAO();
-			try {
-				session.setAttribute("myBasket", dao.findMyBasketByUserId(userId));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 
+		}
 
 	}
 

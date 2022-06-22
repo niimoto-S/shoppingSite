@@ -1,6 +1,8 @@
 package jp.co.aforce.beans;
 
-public class CartBean {
+import java.io.Serializable;
+
+public class CartBean implements Serializable {
 
 	int itemId;
 	String producerId;

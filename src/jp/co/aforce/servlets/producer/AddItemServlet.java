@@ -50,52 +50,58 @@ public class AddItemServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-
-		String itemName = request.getParameter("item_name");
-		String origin = request.getParameter("origin");
-		String unit = request.getParameter("unit");
-		String price = request.getParameter("price");
-		String explanation = request.getParameter("explanation");
-
-		NullCheck check = new NullCheck();
-		String c = check.itemCheck(itemName, origin, unit, price, explanation);
-		if(!c.equals("")) {
-			session.setAttribute("addItemMessage", c + MessageParameter.MESSAGE);
-			response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+		if(roleBean == null || !roleBean.getRole().equals("producer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
 		} else {
-			Part part = request.getPart("image");
-			if(part.getSize() == 0) {
-				session.setAttribute("addItemMessage", ItemInfoParameter.IMAGE_STR + MessageParameter.MESSAGE);
+			String itemName = request.getParameter("item_name");
+			String origin = request.getParameter("origin");
+			String unit = request.getParameter("unit");
+			String price = request.getParameter("price");
+			String explanation = request.getParameter("explanation");
+
+			NullCheck check = new NullCheck();
+			String c = check.itemCheck(itemName, origin, unit, price, explanation);
+			if(!c.equals("")) {
+				session.setAttribute("addItemMessage", c + MessageParameter.MESSAGE);
 				response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
 			} else {
-				if(part.getContentType().equals("image/png") || part.getContentType().equals("image/jpeg")) {
-					int priceInt = Integer.parseInt(price);
-					String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
-					String path = getServletContext().getRealPath("/img");
-					//画像の保存
-					part.write(path+File.separator+fileName);
-					RoleBean bean = (RoleBean)session.getAttribute("userInfo");
-					//beanに情報を投げる
-					ItemBean itemBean = new ItemBean(null, bean.getId(), itemName, origin, unit, priceInt, explanation, fileName, "enable");
-					//DAOでDBに登録
-					ItemDAO itemDAO = new ItemDAO();
-					try {
-						itemDAO.addItem(itemBean);
-						session.setAttribute("addItemMessage", MessageParameter.ADD_COMPLETE);
-						response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
-					} catch (Exception e) {
-						session.setAttribute("addItemMessage", MessageParameter.SYSTEM_ERROR);
-						response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
-						e.printStackTrace();
-					}
-				} else {
-					session.setAttribute("addItemMessage", ItemInfoParameter.IMAGE_CONTENT_TYPE_STR);
+				Part part = request.getPart("image");
+				if(part.getSize() == 0) {
+					session.setAttribute("addItemMessage", ItemInfoParameter.IMAGE_STR + MessageParameter.MESSAGE);
 					response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+				} else {
+					if(part.getContentType().equals("image/png") || part.getContentType().equals("image/jpeg")) {
+						int priceInt = Integer.parseInt(price);
+						String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
+						String path = getServletContext().getRealPath("/img");
+						//画像の保存
+						part.write(path+File.separator+fileName);
+						RoleBean bean = (RoleBean)session.getAttribute("userInfo");
+						//beanに情報を投げる
+						ItemBean itemBean = new ItemBean(null, bean.getId(), itemName, origin, unit, priceInt, explanation, fileName, "enable");
+						//DAOでDBに登録
+						ItemDAO itemDAO = new ItemDAO();
+						try {
+							itemDAO.addItem(itemBean);
+							session.setAttribute("addItemMessage", MessageParameter.ADD_COMPLETE);
+							response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+						} catch (Exception e) {
+							session.setAttribute("addItemMessage", MessageParameter.SYSTEM_ERROR);
+							response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+							e.printStackTrace();
+						}
+					} else {
+						session.setAttribute("addItemMessage", ItemInfoParameter.IMAGE_CONTENT_TYPE_STR);
+						response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+					}
+
+
 				}
-
-
 			}
 		}
+
+
 
 
 

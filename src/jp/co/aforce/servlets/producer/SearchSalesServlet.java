@@ -33,16 +33,21 @@ public class SearchSalesServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		BuyedDAO dao = new BuyedDAO();
 		RoleBean roleBean = (RoleBean)session.getAttribute("userInfo");
-		try {
-			session.setAttribute("salesBean", dao.findAllByProducerId(roleBean.getId()));
-			response.sendRedirect("/ShoppingSite/views/producer/sales.jsp");
-		} catch (Exception e) {
-			session.setAttribute("salesMessage", MessageParameter.SYSTEM_ERROR);
-			response.sendRedirect("/ShoppingSite/views/producer/sales.jsp");
-			e.printStackTrace();
+		if(roleBean == null || !roleBean.getRole().equals("producer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			BuyedDAO dao = new BuyedDAO();
+			try {
+				session.setAttribute("salesBean", dao.findAllByProducerId(roleBean.getId()));
+				response.sendRedirect("/ShoppingSite/views/producer/sales.jsp");
+			} catch (Exception e) {
+				session.setAttribute("salesMessage", MessageParameter.SYSTEM_ERROR);
+				response.sendRedirect("/ShoppingSite/views/producer/sales.jsp");
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 	/**

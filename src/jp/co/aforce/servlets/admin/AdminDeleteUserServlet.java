@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.UserDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
@@ -39,29 +40,36 @@ public class AdminDeleteUserServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter("deleteUser");
-		UserDAO userDAO = new UserDAO();
-		String searchId;
+
 		HttpSession session = request.getSession();
-		try {
-			searchId = (String) session.getAttribute("userId");
-			if(searchId == null) {
+		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
+		if(bean == null || !bean.getRole().equals("admin")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			String userId = request.getParameter("deleteUser");
+			UserDAO userDAO = new UserDAO();
+			String searchId;
+			try {
+				searchId = (String) session.getAttribute("userId");
+				if(searchId == null) {
+					searchId = "";
+				}
+			} catch (Exception e) {
 				searchId = "";
 			}
-		} catch (Exception e) {
-			searchId = "";
+
+			try {
+				userDAO.deleteUser(userId);
+				session.setAttribute("userInfoBean", userDAO.searchUserByAllName(searchId));
+				session.setAttribute("adminSearchUserMessage", MessageParameter.DELETE_COMPLETE);
+				response.sendRedirect("/ShoppingSite/views/admin/adminUserSearch.jsp");
+			} catch (Exception e) {
+				session.setAttribute("adminSearchUserMessage", MessageParameter.SYSTEM_ERROR);
+				response.sendRedirect("/ShoppingSite/views/admin/adminUserSearch.jsp");
+				e.printStackTrace();
+			}
 		}
 
-		try {
-			userDAO.deleteUser(userId);
-			session.setAttribute("userInfoBean", userDAO.searchUserByAllName(searchId));
-			session.setAttribute("adminSearchUserMessage", MessageParameter.DELETE_COMPLETE);
-			response.sendRedirect("/ShoppingSite/views/admin/adminUserSearch.jsp");
-		} catch (Exception e) {
-			session.setAttribute("adminSearchUserMessage", MessageParameter.SYSTEM_ERROR);
-			response.sendRedirect("/ShoppingSite/views/admin/adminUserSearch.jsp");
-			e.printStackTrace();
-		}
 	}
 
 }

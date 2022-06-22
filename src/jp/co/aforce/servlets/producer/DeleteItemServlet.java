@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
@@ -41,18 +42,23 @@ public class DeleteItemServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		int itemId = Integer.parseInt(request.getParameter("deleteItem"));
-		ItemDAO itemDAO = new ItemDAO();
-		try {
-			itemDAO.deleteItemById(itemId);
-			session.setAttribute("searchItemMessage", MessageParameter.DELETE_COMPLETE);
-//			response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
-			request.getRequestDispatcher("/searchItemServlet").forward(request, response);
-		} catch (Exception e) {
-			session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-			response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
-			e.printStackTrace();
+		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+		if(roleBean == null || !roleBean.getRole().equals("producer")) {
+			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+		} else {
+			int itemId = Integer.parseInt(request.getParameter("deleteItem"));
+			ItemDAO itemDAO = new ItemDAO();
+			try {
+				itemDAO.deleteItemById(itemId);
+				session.setAttribute("searchItemMessage", MessageParameter.DELETE_COMPLETE);
+				request.getRequestDispatcher("/searchItemServlet").forward(request, response);
+			} catch (Exception e) {
+				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
+				response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
+				e.printStackTrace();
+			}
 		}
+
 
 	}
 

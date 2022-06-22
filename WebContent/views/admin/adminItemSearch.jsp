@@ -1,3 +1,4 @@
+
 <%@page import="jp.co.aforce.beans.ItemBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -10,6 +11,13 @@
 <title>商品検索</title>
 </head>
 <body>
+<%@page import="jp.co.aforce.beans.RoleBean"%>
+<%
+RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
+if(roleBean == null || !roleBean.getRole().equals("admin")) {
+	response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+}
+%>
 
 <%try{ %>
 	<% if(session.getAttribute("adminSearchItemMessage").toString() != "") { %>
