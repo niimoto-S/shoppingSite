@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+
+.btn-border {
+  display: inline-block;
+  max-width: 180px;
+  text-align: left;
+  border: 2px solid #fd6c6c;
+  font-size: 16px;
+  color: #fd6c6c;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: .4s;
+}
+
+.btn-border:hover {
+  background-color: #EC407A;
+  border-color: #fd6c6c;
+  color: #FFF;
+}

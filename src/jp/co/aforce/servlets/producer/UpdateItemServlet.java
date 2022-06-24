@@ -40,6 +40,7 @@ public class UpdateItemServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html; charset=" + "UTF-8");
 		int itemId = Integer.parseInt(request.getParameter("updateItem"));
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");

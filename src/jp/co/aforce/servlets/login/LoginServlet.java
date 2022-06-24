@@ -41,7 +41,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 
 		String id = request.getParameter("id");
@@ -63,7 +63,7 @@ public class LoginServlet extends HttpServlet {
 					session.setAttribute("userInfo", roleBean);
 					session.setAttribute("userName", name);
 					request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-					response.sendRedirect("/ShoppingSite/views/consumer/consumer_menu.jsp");
+					request.getRequestDispatcher("/searchAllServlet").forward(request, response);
 				//生産者
 				} else if(roleBean.getRole().equals("producer") && roleBean.getAccountStatus().equals("enable")) {
 					session.setAttribute("userInfo", roleBean);

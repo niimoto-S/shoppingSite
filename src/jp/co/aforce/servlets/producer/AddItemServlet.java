@@ -48,7 +48,7 @@ public class AddItemServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 		if(roleBean == null || !roleBean.getRole().equals("producer")) {

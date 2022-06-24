@@ -18,7 +18,7 @@ public class CartDAO extends DAO {
 		Connection con = getConnection();
 		String sql = "insert into "
 				+ CartParameter.TABLE
-				+ " values (?, ?, ?, ?)";
+				+ " values (null, ?, ?, ?, ?)";
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setInt(1, cartBean.getItemId());
 		st.setString(2, cartBean.getProducerId());
@@ -30,11 +30,35 @@ public class CartDAO extends DAO {
 		con.close();
 	}
 
+	public int check(int itemId, String userId) throws Exception {
+		Connection con = getConnection();
+		String sql = "select count(*) from "
+				+ CartParameter.TABLE
+				+ " where "
+				+ ItemInfoParameter.ITEM_ID + " = ?"
+				+ " AND "
+				+ CartParameter.CONSUMER_ID + " = ?"
+				;
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setInt(1, itemId);
+		st.setString(2, userId);
+		ResultSet rs = st.executeQuery();
+		int count = 0;
+		while(rs.next()) {
+			count = rs.getInt("count(*)");
+		}
+		st.close();
+		con.close();
+
+		return count;
+	}
+
 	public MyBasketInfoBean findMyBasketByUserId(String userId) throws Exception {
 
 		MyBasketInfoBean basketInfoBean = new MyBasketInfoBean();
 		Connection con = getConnection();
 		String sql = "select "
+				+ CartParameter.TABLE + "." + CartParameter.ID + ","
 				+ CartParameter.TABLE + "." + ItemInfoParameter.ITEM_ID + ","
 				+ ItemInfoParameter.TABLE + "." + ItemInfoParameter.NAME + ","
 				+ ItemInfoParameter.TABLE + "." + ItemInfoParameter.ORIGIN + ","
@@ -62,6 +86,7 @@ public class CartDAO extends DAO {
 		MyBasketBean basketBean = null;
 		while(rs.next()) {
 			basketBean = new MyBasketBean(
+					rs.getInt(CartParameter.ID),
 					rs.getInt(ItemInfoParameter.ITEM_ID),
 					rs.getString(ItemInfoParameter.NAME),
 					rs.getString(ItemInfoParameter.ORIGIN),
@@ -86,7 +111,7 @@ public class CartDAO extends DAO {
 		String sql = "delete from "
 				+ CartParameter.TABLE
 				+ " where "
-				+ ItemInfoParameter.ITEM_ID + " = ?"
+				+ CartParameter.ID + " = ?"
 				;
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setInt(1, itemId);
@@ -103,7 +128,7 @@ public class CartDAO extends DAO {
 				+ " set "
 				+ CartParameter.QUANTITY + " = ?"
 				+ " where "
-				+ ItemInfoParameter.ITEM_ID + " = ?"
+				+ CartParameter.ID + " = ?"
 				;
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setInt(1, quantity);

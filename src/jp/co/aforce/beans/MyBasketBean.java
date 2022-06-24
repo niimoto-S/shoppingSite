@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class MyBasketBean implements Serializable {
 
+	private int id;
 	private int itemId;
 	private String itemName;
 	private String origin;
@@ -17,6 +18,7 @@ public class MyBasketBean implements Serializable {
 	public MyBasketBean() {}
 
 	public MyBasketBean(
+			int id,
 			int itemId,
 			String itemName,
 			String origin,
@@ -27,6 +29,7 @@ public class MyBasketBean implements Serializable {
 			String image,
 			String producerId
 			) {
+		this.id = id;
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.origin = origin;
@@ -38,6 +41,14 @@ public class MyBasketBean implements Serializable {
 		this.producerId = producerId;
 	}
 
+
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public int getItemId() {
 		return itemId;
 	}

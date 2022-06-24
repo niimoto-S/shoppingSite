@@ -25,6 +25,13 @@
 
     <!-- url: The JDBC connection url for connecting to your MySQL database.
          -->
+
+    <!--
+    username="admin"
+    password="training2022"
+    driverClassName="com.mysql.cj.jdbc.Driver"
+    url="jdbc:mysql://training2022.cod4z3amxpsn.us-east-1.rds.amazonaws.com:3306/shoppingsite_niimoto"/>
+     -->
 	<Resource name="jdbc/member_information"
 	auth="Container"
 	type="javax.sql.DataSource"
@@ -34,6 +41,5 @@
     username="root"
     password="password"
     driverClassName="com.mysql.cj.jdbc.Driver"
-    url="jdbc:mysql://localhost:3306/shoppingsite"/>
-
+    url="jdbc:mysql://localhost:3306/shoppingsite_niimoto_ver2"/>
 </Context>

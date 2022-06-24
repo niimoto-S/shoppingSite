@@ -33,6 +33,7 @@ public class AdminSearchUserServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
 		if(bean == null || !bean.getRole().equals("admin")) {

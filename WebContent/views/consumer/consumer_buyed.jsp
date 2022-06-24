@@ -8,9 +8,13 @@
 <head>
 <meta charset="UTF-8">
 <title>購入履歴</title>
+<link rel="stylesheet" href="../../css/reset2.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/header-7.css" />
+<link rel="stylesheet" href="../../css/table2.css" />
 </head>
 <body>
-
+<jsp:include page="header.html" ></jsp:include>
 <%@page import="jp.co.aforce.beans.RoleBean"%>
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
@@ -22,18 +26,15 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 <% int total = 0; %>
 <%try{ %>
 	<% if(session.getAttribute("buyedMessage").toString() != "") { %>
-	<p><h3 style="color: red"><%=session.getAttribute("buyedMessage") %></h3>
+	<br><br><p><h3 style="color: red; font-size: 50px"><%=session.getAttribute("buyedMessage") %></h3>
 	<%}
 	session.removeAttribute("buyedMessage");
 	%>
 
 <%} catch (Exception e) {} %>
 
-購入履歴
+<br><p style="font-size: 40px">購入履歴</p><br>
 
-<p><a href="consumer_menu.jsp">
-    	<button type="button">戻る</button>
-</a></p>
 <% BuyedInfoBeanEx infoBeanEx = (BuyedInfoBeanEx) session.getAttribute("buyedInfoBeanEx"); %>
 <% if(infoBeanEx.getArraySize() > 0) { %>
 
@@ -71,6 +72,6 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 <%}else{ %>
 	購入履歴がありません。
 <%} %>
-
+<script src="../../js/header-7.js"></script>
 </body>
 </html>

@@ -8,9 +8,15 @@
 <head>
 <meta charset="UTF-8">
 <title>商品検索</title>
+<link rel="stylesheet" href="../../css/reset2.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/header-7.css" />
+<link rel="stylesheet" href="../../css/form2.css" />
+<link rel="stylesheet" href="../../css/button.css" />
+<link rel="stylesheet" href="../../css/table.css" />
 </head>
 <body>
-
+<jsp:include page="header.html" ></jsp:include>
 <%@page import="jp.co.aforce.beans.RoleBean"%>
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
@@ -21,23 +27,22 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 
 <%try{ %>
 	<% if(session.getAttribute("searchItemMessage").toString() != "") { %>
-	<p><h3 style="color: red"><%=session.getAttribute("searchItemMessage") %></h3>
+	<br><br><p><h3 style="color: red; font-size: 50px"><%=session.getAttribute("searchItemMessage") %></h3><br>
 	<%}
 	session.removeAttribute("searchItemMessage");
 	%>
 
 <%} catch (Exception e) {} %>
 
-	商品検索
-
-<p><a href="consumer_menu.jsp">
-    	<button type="button">戻る</button>
-</a></p>
-
-商品名検索<br>
+<br><p style="font-size: 40px">商品名検索</p><br>
 <form action="../../searchAllServlet" method="get">
-	<input type="text" name="itemName">
-	<input type="submit" value="検索">
+
+	<div class="cp_iptxt container">
+		<input class="ef" type="text" name="itemName" placeholder="">
+		<label>検索</label>
+		<span class="focus_line"></span>
+		<input type="submit" class="btn-border" value="検索">
+	</div>
 </form>
 
 	<table border="1">
@@ -56,7 +61,7 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 			<% ItemInfoBean infoBean = (ItemInfoBean) session.getAttribute("itemInfoBean"); %>
 			<% for(ItemBean bean : infoBean.getItemBeanArray()) { %>
 			<tr>
-				<td><%=bean.getItemName() %></td>
+				<td valign="middle"><%=bean.getItemName() %></td>
 				<td><%=bean.getOrigin() %></td>
 				<td>
 				<select name="quantity" id="quantity" form="test<%=bean.getItemId() %>">
@@ -67,12 +72,15 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 				</select>
 				<%=bean.getUnit() %></td>
 				<td><%=bean.getPrice() %>円</td>
-				<td><%=bean.getExplanation() %></td>
+				<td class="exp"><%=bean.getExplanation() %></td>
 				<td><img alt="<%=bean.getImageName() %>" src="../../img/<%=bean.getImageName() %>" height="250px" width="250px"></td>
 				<td>
 				<form action="../../addCartServlet" method="post" id="test<%=bean.getItemId() %>">
 					<input type="hidden" name="addItem" value="<%=bean.getItemId() %>">
-					<input type="submit" value="追加">
+
+					<div class="container">
+						<input type="submit" class="btn-border" value="追加">
+					</div>
 				</form></td>
 			</tr>
 			<% } %>
@@ -81,6 +89,6 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 
 <script type="text/javascript" src="../../js/confirm.js"></script>
 <script type="text/javascript" src="../../js/hidden.js"></script>
-
+<script src="../../js/header-7.js"></script>
 </body>
 </html>

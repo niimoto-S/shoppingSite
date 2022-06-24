@@ -44,6 +44,7 @@ public class AddCartServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
 		if(bean == null || !bean.getRole().equals("consumer")) {
@@ -67,10 +68,15 @@ public class AddCartServlet extends HttpServlet {
 					String producerId = itemDAO.findProducerIdByItemId(itemIdInt);
 					CartBean cartBean = new CartBean(itemIdInt, producerId, consumerId, quantityInt);
 					CartDAO dao = new CartDAO();
-					dao.addCart(cartBean);
-					request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-					session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_COMPLETE);
-					response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+					if(dao.check(itemIdInt, bean.getId()) == 0) {
+						dao.addCart(cartBean);
+						request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
+						session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_COMPLETE);
+						response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+					} else {
+						session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_ERROR);
+						response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+					}
 				} catch (SQLException e) {
 					if(e.getErrorCode() == 1062) {
 						session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_ERROR);

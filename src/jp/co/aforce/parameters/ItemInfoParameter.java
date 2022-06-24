@@ -3,18 +3,18 @@ package jp.co.aforce.parameters;
 public class ItemInfoParameter {
 
 	//TABLE
-	public static final String TABLE = "ITEM_INFO_NIIMOTO";
+	public static final String TABLE = "item_info_niimoto";
 
 	//SQL
-	public static final String ITEM_ID = "ITEM_ID";
-	public static final String USER_ID = "USER_ID";
-	public static final String NAME = "NAME";
-	public static final String ORIGIN = "ORIGIN";
-	public static final String UNIT = "UNIT";
-	public static final String PRICE = "PRICE";
-	public static final String EXPLANATION = "EXPLANATION";
-	public static final String IMAGE = "IMAGE";
-	public static final String ITEM_STATUS = "ITEM_STATUS";
+	public static final String ITEM_ID = "item_id";
+	public static final String USER_ID = "user_id";
+	public static final String NAME = "name";
+	public static final String ORIGIN = "origin";
+	public static final String UNIT = "unit";
+	public static final String PRICE = "price";
+	public static final String EXPLANATION = "explanation";
+	public static final String IMAGE = "image";
+	public static final String ITEM_STATUS = "item_status";
 
 	//未入力エラー
 	public static final String NAME_STR = "商品名";

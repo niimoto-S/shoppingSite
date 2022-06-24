@@ -3,18 +3,18 @@ package jp.co.aforce.parameters;
 public class UserInfoParameter {
 
 	//テーブル名
-	public static final String TABLE = "USER_INFO_NIIMOTO";
+	public static final String TABLE = "user_info_niimoto";
 
 	//SQL
-	public static final String USER_ID = "ID";
-	public static final String LAST_NAME = "LAST_NAME";
-	public static final String FIRST_NAME = "FIRST_NAME";
-	public static final String SEX = "SEX";
-	public static final String YEAR = "YEAR";
-	public static final String MONTH = "MONTH";
-	public static final String DAY = "DAY";
-	public static final String PHONE_NUMBER = "PHONE_NUMBER";
-	public static final String MAIL_ADDRESS = "MAIL_ADDRESS";
+	public static final String USER_ID = "id";
+	public static final String LAST_NAME = "last_name";
+	public static final String FIRST_NAME = "first_name";
+	public static final String SEX = "sex";
+	public static final String YEAR = "year";
+	public static final String MONTH = "month";
+	public static final String DAY = "day";
+	public static final String PHONE_NUMBER = "phone_number";
+	public static final String MAIL_ADDRESS = "mail_address";
 
 	//未入力エラー
 	public static final String USER_ID_STR = "ID";

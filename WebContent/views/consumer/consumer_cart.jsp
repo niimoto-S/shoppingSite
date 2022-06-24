@@ -9,9 +9,14 @@
 <head>
 <meta charset="UTF-8">
 <title>カート</title>
+<link rel="stylesheet" href="../../css/reset2.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/header-7.css" />
+<link rel="stylesheet" href="../../css/button.css" />
+<link rel="stylesheet" href="../../css/table2.css" />
 </head>
 <body>
-
+<jsp:include page="header.html" ></jsp:include>
 <%@page import="jp.co.aforce.beans.RoleBean"%>
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
@@ -23,21 +28,16 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 <% int total = 0; %>
 <%try{ %>
 	<% if(session.getAttribute("cartMessage").toString() != "") { %>
-	<p><h3 style="color: red"><%=session.getAttribute("cartMessage") %></h3>
+	<br><br><p><h3 style="color: red; font-size: 50px"><%=session.getAttribute("cartMessage") %></h3>
 	<%}
 	session.removeAttribute("cartMessage");
 	%>
 
 <%} catch (Exception e) {} %>
-
-	カート
-
-<p><a href="consumer_menu.jsp">
-    	<button type="button">戻る</button>
-</a></p>
+<br><p style="font-size: 40px">マイカート</p><br>
 <% MyBasketInfoBean infoBean = (MyBasketInfoBean) session.getAttribute("myBasket"); %>
 <% if(infoBean.getArraySize() > 0){ %>
-マイカート<br>
+
 <table border="1">
 	<thead>
 		<tr>
@@ -58,7 +58,7 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 				<td><%=bean.getItemName() %></td>
 				<td><%=bean.getOrigin() %></td>
 				<td>
-				<select name="quantity" id="quantity" form="test<%=bean.getItemId() %>">
+				<select name="quantity" id="quantity" form="test<%=bean.getId() %>">
 					<option value="<%=bean.getQuantity() %>"><%=bean.getQuantity() %></option>
 					<c:forEach var="i" begin="1" end="100">
 						<option value="${i}">${i}</option>
@@ -72,14 +72,14 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 				<td><%=bean.getQuantity() * bean.getPrice() %>円</td>
 				<% total = total + (bean.getQuantity() * bean.getPrice()); %>
 				<td>
-				<form action="../../updateCartServlet" method="post" id="test<%=bean.getItemId() %>">
-					<input type="hidden" name="updateItem" value="<%=bean.getItemId() %>">
+				<form action="../../updateCartServlet" method="post" id="test<%=bean.getId() %>">
+					<input type="hidden" name="updateItem" value="<%=bean.getId() %>">
 					<input type="submit" value="変更" data-update="<%=bean.getItemName() %>" onclick="return test1(this)">
 				</form>
 				</td>
 				<td>
 				<form action="../../deleteCartServlet" method="post">
-					<button id="deleteId" name="deleteCart" value="<%=bean.getItemId() %>" data-delete="<%=bean.getItemName() %>" onclick="return test(this)">削除</button>
+					<button id="deleteId" name="deleteCart" value="<%=bean.getId() %>" data-delete="<%=bean.getItemName() %>" onclick="return test(this)">削除</button>
 				</form>
 				</td>
 			</tr>
@@ -100,5 +100,6 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 	</a>
 <% } %>
 <script type="text/javascript" src="../../js/confirm.js"></script>
+<script src="../../js/header-7.js"></script>
 </body>
 </html>

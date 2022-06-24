@@ -8,9 +8,12 @@
 <head>
 <meta charset="UTF-8">
 <title>売り上げ</title>
+<link rel="stylesheet" href="../../css/reset2.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/header-7.css" />
 </head>
 <body>
-
+<jsp:include page="header.html" ></jsp:include>
 <%@page import="jp.co.aforce.beans.RoleBean"%>
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
@@ -62,5 +65,6 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 <% } %>
 
 <script type="text/javascript" src="../../js/w3.js"></script>
+<script src="../../js/header-7.js"></script>
 </body>
 </html>

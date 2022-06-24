@@ -32,7 +32,7 @@ public class BuyedDAO extends DAO{
 		BuyedBean buyedBean = null;
 		while(rs.next()) {
 			buyedBean = new BuyedBean(
-					rs.getInt("ID"),
+					rs.getInt("id"),
 					rs.getInt(BuyedParameter.ITEM_ID),
 					rs.getString(BuyedParameter.CONSUMER_ID),
 					rs.getString(BuyedParameter.PRODUCER_ID),

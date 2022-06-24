@@ -32,6 +32,7 @@ public class SearchItemServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 		if(roleBean == null || !roleBean.getRole().equals("producer")) {
