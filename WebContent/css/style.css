@@ -71,3 +71,10 @@ body {
   min-width: initial;
   padding: 0.5rem;
 }
+
+.total {
+	font-size: 45px;
+	margin: 20px;
+	margin-bottom: 50px;
+	text-align: right;
+}

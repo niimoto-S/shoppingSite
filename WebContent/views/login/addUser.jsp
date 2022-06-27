@@ -6,13 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>新規ユーザ登録</title>
-<link rel="stylesheet" href="../../css/reset.min.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/form.css" />
-<link rel="stylesheet" href="../../css/radio.css" />
-<link rel="stylesheet" href="../../css/select.css" />
-<link rel="stylesheet" href="../../css/button.css" />
+<link rel="stylesheet" href="css/reset.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/form.css" />
+<link rel="stylesheet" href="css/radio.css" />
+<link rel="stylesheet" href="css/select.css" />
+<link rel="stylesheet" href="css/button.css" />
 </head>
 <body>
 
@@ -27,9 +27,10 @@
 
 <%} catch (Exception e) {} %>
 
+
 <br><p style="font-size: 40px">ユーザ情報登録</p><br>
 <div class="form-wrapper">
-<form action="../../addUserServlet" method="post">
+<form action="addUserServlet" method="post">
 		<p style="font-size: 20px">名前</p>
 		<div class="cp_iptxt">
 			<input class="ef" type="text" name="last_name" placeholder="">
@@ -123,7 +124,7 @@
 		</div>
 
 	<div class="container">
-		<a href="login.jsp" class="btn-border">戻る</a>
+		<a href="loginServlet" class="btn-border">戻る</a>
 		<input type="reset" class="btn-border" value="リセット">
 		<input type="submit" class="btn-border" value="登録">
 	</div>
@@ -132,6 +133,6 @@
 </form>
 </div>
 <br><br>
-<script src="../../js/header-7.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

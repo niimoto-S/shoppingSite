@@ -9,11 +9,11 @@
 <head>
 <meta charset="UTF-8">
 <title>カート</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/button.css" />
-<link rel="stylesheet" href="../../css/table2.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/button.css" />
+<link rel="stylesheet" href="css/table2.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -22,6 +22,7 @@
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 	response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+
 }
 %>
 
@@ -68,18 +69,22 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 				</td>
 				<td><%=bean.getPrice() %>円</td>
 				<td><%=bean.getExplanation() %></td>
-				<td><img alt="画像" src="../../img/<%=bean.getImage() %>" width="250px" height="250px"></td>
+				<td><img alt="画像" src="img/<%=bean.getImage() %>" width="250px" height="250px"></td>
 				<td><%=bean.getQuantity() * bean.getPrice() %>円</td>
 				<% total = total + (bean.getQuantity() * bean.getPrice()); %>
 				<td>
-				<form action="../../updateCartServlet" method="post" id="test<%=bean.getId() %>">
+				<form action="updateCartServlet" method="post" id="test<%=bean.getId() %>">
 					<input type="hidden" name="updateItem" value="<%=bean.getId() %>">
-					<input type="submit" value="変更" data-update="<%=bean.getItemName() %>" onclick="return test1(this)">
+					<div class="container">
+					<input class="btn-border" type="submit" value="変更" data-update="<%=bean.getItemName() %>" onclick="return test1(this)">
+					</div>
 				</form>
 				</td>
 				<td>
-				<form action="../../deleteCartServlet" method="post">
-					<button id="deleteId" name="deleteCart" value="<%=bean.getId() %>" data-delete="<%=bean.getItemName() %>" onclick="return test(this)">削除</button>
+				<form action="deleteCartServlet" method="post">
+					<div class="container">
+						<button class="btn-border" id="deleteId" name="deleteCart" value="<%=bean.getId() %>" data-delete="<%=bean.getItemName() %>" onclick="return test(this)">削除</button>
+					</div>
 				</form>
 				</td>
 			</tr>
@@ -88,18 +93,22 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 	</tbody>
 </table>
 
-合計<%=total %>円
-<form action="../../buyedServlet" method="post">
-	<input type="submit" value="購入">
+<p class="total">合計:<%=total %>円</p>
+<form action="buyedServlet" method="post">
+	<div class="container" style="text-align: right;">
+		<input type="submit" class="btn-border" style="margin-right: 100px; margin-bottom: 100px;" value="購入" onclick="return test3()">
+	</div>
 </form>
 
 <% } else { %>
 	カートには何も入っていません。
-	<a href="../../searchAllServlet">
-    <button type="button">商品</button>
+	<div class="container">
+	<a href="searchAllServlet">
+		<input type="button" class="btn-border" value="商品">
 	</a>
+	</div>
 <% } %>
-<script type="text/javascript" src="../../js/confirm.js"></script>
-<script src="../../js/header-7.js"></script>
+<script type="text/javascript" src="js/confirm.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

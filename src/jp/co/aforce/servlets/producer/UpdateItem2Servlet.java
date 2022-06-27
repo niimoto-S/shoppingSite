@@ -20,39 +20,29 @@ import jp.co.aforce.parameters.ItemInfoParameter;
 import jp.co.aforce.parameters.MessageParameter;
 import jp.co.aforce.util.NullCheck;
 
-/**
- * Servlet implementation class UpdateItem2Servlet
- */
+
 @WebServlet("/updateItem2Servlet")
 @MultipartConfig
 public class UpdateItem2Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public UpdateItem2Servlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 		if(roleBean == null || !roleBean.getRole().equals("producer")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			String itemName = request.getParameter("item_name");
 			String origin = request.getParameter("origin");
@@ -74,13 +64,13 @@ public class UpdateItem2Servlet extends HttpServlet {
 			if(!c.equals("")) {
 				session.setAttribute("updateItemMessage", c + MessageParameter.MESSAGE);
 				session.setAttribute("updateItemBean", itemBean);
-				response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+				request.getRequestDispatcher("/views/producer/updateItem.jsp").forward(request, response);
 			} else {
 				Part part = request.getPart("image");
 				if(part.getSize() == 0) {
 					session.setAttribute("updateItemMessage", ItemInfoParameter.IMAGE_STR + MessageParameter.MESSAGE);
 					session.setAttribute("updateItemBean", itemBean);
-					response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+					request.getRequestDispatcher("/views/producer/updateItem.jsp").forward(request, response);
 				} else {
 					if(part.getContentType().equals("image/png") || part.getContentType().equals("image/jpeg")) {
 						String fileName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
@@ -94,17 +84,17 @@ public class UpdateItem2Servlet extends HttpServlet {
 						try {
 							itemDAO.updateItem(itemBean);
 							session.setAttribute("updateItemMessage", MessageParameter.UPDATE_COMPLETE);
-							response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+							request.getRequestDispatcher("/views/producer/updateItem.jsp").forward(request, response);
 						} catch (Exception e) {
 							session.setAttribute("updateItemMessage", MessageParameter.SYSTEM_ERROR);
 							session.setAttribute("updateItemBean", itemBean);
-							response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+							request.getRequestDispatcher("/views/producer/updateItem.jsp").forward(request, response);
 							e.printStackTrace();
 						}
 					} else {
 						session.setAttribute("updateItemMessage", ItemInfoParameter.IMAGE_CONTENT_TYPE_STR);
 						session.setAttribute("updateItemBean", itemBean);
-						response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+						request.getRequestDispatcher("/views/producer/updateItem.jsp").forward(request, response);
 					}
 
 

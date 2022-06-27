@@ -13,47 +13,35 @@ import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
-/**
- * Servlet implementation class UpdateItemServlet
- */
+
 @WebServlet("/updateItemServlet")
 public class UpdateItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public UpdateItemServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		int itemId = Integer.parseInt(request.getParameter("updateItem"));
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 		if(roleBean == null || !roleBean.getRole().equals("producer")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			ItemDAO itemDAO = new ItemDAO();
 			try {
 				session.setAttribute("updateItemBean", itemDAO.updateItemById(itemId));
-				response.sendRedirect("/ShoppingSite/views/producer/updateItem.jsp");
+				request.getRequestDispatcher("/views/producer/updateItem.jsp").forward(request, response);
 			} catch (Exception e) {
 				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-				response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
+				request.getRequestDispatcher("/views/producer/search_item.jsp").forward(request, response);
 				e.printStackTrace();
 			}
 		}

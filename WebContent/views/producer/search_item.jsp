@@ -7,12 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>販売商品検索</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/form2.css" />
-<link rel="stylesheet" href="../../css/button.css" />
-<link rel="stylesheet" href="../../css/table2.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/form2.css" />
+<link rel="stylesheet" href="css/button.css" />
+<link rel="stylesheet" href="css/table2.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -34,7 +34,7 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 <%} catch (Exception e) {} %>
 
 <br><p style="font-size: 40px">商品名検索</p><br>
-<form action="../../searchItemServlet" method="get">
+<form action="searchItemServlet" method="get">
 	<div class="cp_iptxt container">
 		<input class="ef" type="text" name="itemWord" placeholder="">
 		<label>検索</label>
@@ -62,15 +62,15 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 				<td><%=bean.getItemName() %></td>
 				<td><%=bean.getOrigin() %></td>
 				<td><%=bean.getUnit() %></td>
-				<td><%=bean.getPrice() %></td>
+				<td><%=bean.getPrice() %>円</td>
 				<td><%=bean.getExplanation() %></td>
-				<td><img alt="<%=bean.getImageName() %>" src="../../img/<%=bean.getImageName() %>" height="250px" width="250px"></td>
-				<td><form action="../../updateItemServlet" method="post">
+				<td><img alt="<%=bean.getImageName() %>" src="img/<%=bean.getImageName() %>" height="250px" width="250px"></td>
+				<td><form action="updateItemServlet" method="post">
 					<div class="container">
 						<button class="btn-border" name="updateItem" value="<%=bean.getItemId() %>">変更</button>
 					</div>
 				</form></td>
-				<td><form action="../../deleteItemServlet" method="post">
+				<td><form action="deleteItemServlet" method="post">
 					<div class="container">
 						<button class="btn-border" id="deleteId" name="deleteItem" value="<%=bean.getItemId() %>" data-delete="<%=bean.getItemName() %>" onclick="return test(this)">削除</button>
 					</div>
@@ -80,8 +80,8 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 		</tbody>
 	</table>
 
-<script type="text/javascript" src="../../js/confirm.js"></script>
-<script src="../../js/header-7.js"></script>
+<script type="text/javascript" src="js/confirm.js"></script>
+<script src="js/header-7.js"></script>
 
 </body>
 </html>

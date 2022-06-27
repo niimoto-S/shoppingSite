@@ -5,10 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>ログイン</title>
-<link rel="stylesheet" href="../../css/reset.min.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/sample2.css">
+<link rel="stylesheet" href="css/reset.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/sample2.css">
 </head>
 <body>
 
@@ -16,7 +16,7 @@
 
 <%try{ %>
 	<% if(session.getAttribute("loginMessage").toString() != "") { %>
-	<p><h3 style="color: red"><%=session.getAttribute("loginMessage") %></h3>
+	<p><br><h3 style="color: red; font-size: 40px"><%=session.getAttribute("loginMessage") %></h3>
 	<%}
 	session.removeAttribute("loginMessage");
 	%>
@@ -26,7 +26,7 @@
 
 	<div class="form-wrapper">
 		<h1>Sign In</h1>
-		<form action="../../loginServlet" method="post">
+		<form action="loginServlet" method="post">
 
 			<div class="form-item">
 				<label for="id"></label>
@@ -44,13 +44,12 @@
     		</div>
     	</form>
 		<div class="form-footer">
-			<p><a href="addUser.jsp">新規ユーザ登録</a></p>
+			<p><a href="addUserServlet">新規ユーザ登録</a></p>
 		</div>
 	</div>
 
 
-<%session.invalidate(); %>
-<script src="../../js/header-7.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>
 

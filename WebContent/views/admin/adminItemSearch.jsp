@@ -9,12 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <title>商品検索</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/form2.css" />
-<link rel="stylesheet" href="../../css/button.css" />
-<link rel="stylesheet" href="../../css/table2.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/form2.css" />
+<link rel="stylesheet" href="css/button.css" />
+<link rel="stylesheet" href="css/table2.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -22,7 +22,8 @@
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 if(roleBean == null || !roleBean.getRole().equals("admin")) {
-	response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+	response.sendRedirect("../../logoutServlet");
+	//response.sendRedirect("/ShoppingSite/views/login/login.jsp");
 }
 %>
 
@@ -39,7 +40,7 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 <% ItemInfoBean infoBean = (ItemInfoBean) session.getAttribute("itemInfoBean"); %>
 <% if(infoBean.getArraySize() > 0) { %>
 <br><p style="font-size: 40px">商品名検索</p><br>
-	<form action="../../adminSearchItemServlet" method="get">
+	<form action="adminSearchItemServlet" method="get">
 		<div class="cp_iptxt container">
 			<input class="ef" type="text" name="itemName" placeholder="">
 			<label>商品名</label>
@@ -70,12 +71,14 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 				<td><%=bean.getItemName() %></td>
 				<td><%=bean.getOrigin() %></td>
 				<td><%=bean.getUnit() %></td>
-				<td><%=bean.getPrice() %></td>
+				<td><%=bean.getPrice() %>円</td>
 				<td><%=bean.getExplanation() %></td>
-				<td><img src="../../img/<%=bean.getImageName() %>" width="250px" height="250px"></td>
+				<td><img src="img/<%=bean.getImageName() %>" width="250px" height="250px"></td>
 				<td>
-				<form action="../../adminDeleteItemServlet" method="post">
-					<button id="deleteId" name="deleteItem" value="<%=bean.getItemId() %>" data-delete="<%=bean.getItemName() %>" onclick="return test(this)">削除</button>
+				<form action="adminDeleteItemServlet" method="post">
+					<div class="container">
+					<button class="btn-border" id="deleteId" name="deleteItem" value="<%=bean.getItemId() %>" data-delete="<%=bean.getItemName() %>" onclick="return test(this)">削除</button>
+					</div>
 				</form>
 				</td>
 			</tr>
@@ -83,7 +86,7 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 		</tbody>
 	</table>
 <% } %>
-<script type="text/javascript" src="../../js/confirm.js"></script>
-<script src="../../js/header-7.js"></script>
+<script type="text/javascript" src="js/confirm.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

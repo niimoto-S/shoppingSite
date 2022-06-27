@@ -8,12 +8,12 @@
 <head>
 <meta charset="UTF-8">
 <title>ユーザ検索</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/button.css" />
-<link rel="stylesheet" href="../../css/table3.css" />
-<link rel="stylesheet" href="../../css/form2.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/button.css" />
+<link rel="stylesheet" href="css/table3.css" />
+<link rel="stylesheet" href="css/form2.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -35,7 +35,7 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 <%} catch (Exception e) {} %>
 
 <br><p style="font-size: 40px">ユーザID検索</p><br>
-	<form action="../../adminSearchUserServlet" method="get">
+	<form action="adminSearchUserServlet" method="get">
 
 		<div class="cp_iptxt container">
 			<input class="ef" type="text" name="userId" placeholder="">
@@ -77,7 +77,7 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 				<td><%=beanEx.getPhoneNumber() %></td>
 				<td><%=beanEx.getMailAddress() %></td>
 				<td>
-				<form action="../../adminDeleteUserServlet" method="post">
+				<form action="adminDeleteUserServlet" method="post">
 					<button id="deleteId" name="deleteUser" value="<%=beanEx.getId() %>" data-delete="<%=beanEx.getId() %>" onclick="return test2(this)">削除</button>
 				</form>
 				</td>
@@ -87,7 +87,7 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 	</table>
 
 <%} else { %>検索結果がありません。<%} %>
-<script type="text/javascript" src="../../js/confirm.js"></script>
-<script src="../../js/header-7.js"></script>
+<script type="text/javascript" src="js/confirm.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

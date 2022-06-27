@@ -28,3 +28,12 @@ function test2(c) {
 		return false;
 	}
 }
+
+function test3() {
+	var checked = window.confirm("カート内の商品を購入します。\nよろしいでしょうか？");
+	if(checked == true){
+		return true;
+	} else {
+		return false;
+	}
+}

@@ -17,38 +17,28 @@ import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 import jp.co.aforce.util.NullCheck;
 
-/**
- * Servlet implementation class AddCartServlet
- */
+
 @WebServlet("/addCartServlet")
 public class AddCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public AddCartServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
 		if(bean == null || !bean.getRole().equals("consumer")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			String  itemId = request.getParameter("addItem");
 			String quantity = request.getParameter("quantity");
@@ -60,7 +50,7 @@ public class AddCartServlet extends HttpServlet {
 			String c = check.cart(itemId, quantity);
 			if(!c.equals("")) {
 				session.setAttribute("searchItemMessage", c + MessageParameter.MESSAGE);
-				response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+				request.getRequestDispatcher("/views/consumer/consumer_search_item.jsp").forward(request, response);
 			} else {
 				int itemIdInt = Integer.parseInt(itemId);
 				int quantityInt = Integer.parseInt(quantity);
@@ -72,21 +62,21 @@ public class AddCartServlet extends HttpServlet {
 						dao.addCart(cartBean);
 						request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
 						session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_COMPLETE);
-						response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+						request.getRequestDispatcher("/views/consumer/consumer_search_item.jsp").forward(request, response);
 					} else {
 						session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_ERROR);
-						response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+						request.getRequestDispatcher("/views/consumer/consumer_search_item.jsp").forward(request, response);
 					}
 				} catch (SQLException e) {
 					if(e.getErrorCode() == 1062) {
 						session.setAttribute("searchItemMessage", MessageParameter.ADD_CART_ERROR);
-						response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+						request.getRequestDispatcher("/views/consumer/consumer_search_item.jsp").forward(request, response);
 					} else {
 						e.getNextException();
 					}
 				} catch (Exception e) {
 					session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-					response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+					request.getRequestDispatcher("/views/consumer/consumer_search_item.jsp").forward(request, response);
 					e.printStackTrace();
 				}
 			}

@@ -6,9 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>ようこそ！</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -22,19 +22,19 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 
 おかえりなさい、${sessionScope.userName}さん！
 <p>
-<a href="../../searchItemServlet">
+<a href="searchItemServlet">
     <button type="button">販売商品検索</button>
 </a>
-<a href="addItem.jsp">
+<a href="addItemServlet">
     <button type="button">販売商品追加</button>
 </a>
-<a href="../../searchSalesServlet">
+<a href="searchSalesServlet">
     <button type="button">売り上げ検索</button>
 </a>
 <a href="../login/login.jsp">
     <button type="button">ログアウト</button>
 </a>
 </p>
-<script src="../../js/header-7.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

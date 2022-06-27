@@ -13,30 +13,23 @@ import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
-/**
- * Servlet implementation class SearchAllServlet
- */
+
 @WebServlet("/searchAllServlet")
 public class SearchAllServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public SearchAllServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 		if(roleBean == null || !roleBean.getRole().equals("consumer")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			String itemName = "";
 			try {
@@ -52,19 +45,17 @@ public class SearchAllServlet extends HttpServlet {
 
 			try {
 				session.setAttribute("itemInfoBean", itemDAO.searchItemByAllId(itemName));
-				response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+				request.getRequestDispatcher("/views/consumer/consumer_search_item.jsp").forward(request, response);
 			} catch (Exception e) {
 				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-				response.sendRedirect("/ShoppingSite/views/consumer/consumer_search_item.jsp");
+				request.getRequestDispatcher("/views/consumer/consumer_search_item.jsp").forward(request, response);
 				e.printStackTrace();
 			}
 		}
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	doGet(request, response);
 	}

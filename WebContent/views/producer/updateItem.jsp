@@ -6,12 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>販売商品追加</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/form.css" />
-<link rel="stylesheet" href="../../css/select.css" />
-<link rel="stylesheet" href="../../css/button.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/form.css" />
+<link rel="stylesheet" href="css/select.css" />
+<link rel="stylesheet" href="css/button.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -34,7 +34,7 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 
 <br><p style="font-size: 40px">販売商品変更</p><br>
 <div class="form-wrapper">
-<form action="../../updateItem2Servlet" method="post" enctype="multipart/form-data">
+<form action="updateItem2Servlet" method="post" enctype="multipart/form-data">
 
 
 	<p style="font-size: 20px">商品名</p>
@@ -72,7 +72,7 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 	<p style="font-size: 20px">価格</p>
 	<div class="cp_iptxt">
 			<input class="ef" type="number" min="0" name="price" placeholder="" value="${sessionScope.updateItemBean.price }">
-			<label>価格</label>
+			<label>円</label>
 			<span class="focus_line"></span>
 		</div>
 
@@ -83,18 +83,18 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 	<input type="file" name="image" accept="image/png, image/jpeg" onchange="previewImage(this);" >
 	</p>
 	<p>
-	<img alt="画像" src="../../img/${sessionScope.updateItemBean.imageName }" height="250px" width="250">変更前
+	<img alt="画像" src="img/${sessionScope.updateItemBean.imageName }" height="250px" width="250">変更前
 	<img id="preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" height="250px" width="250">変更後
 	</p>
 	<div class="container">
-		<a href="../../searchItemServlet" class="btn-border">戻る</a>
+		<a href="searchItemServlet" class="btn-border">戻る</a>
 		<input type="reset" class="btn-border" value="リセット">
 		<input type="submit" class="btn-border" value="変更">
 	</div>
 
 </form>
 </div>
-<script type="text/javascript" src="../../js/image.js"></script>
-<script src="../../js/header-7.js"></script>
+<script type="text/javascript" src="js/image.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

@@ -8,9 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <title>売り上げ</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/table2.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -31,8 +32,7 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 	%>
 <%} catch (Exception e) {} %>
 
-	売り上げ
-
+<br><p style="font-size: 40px">売り上げ</p><br>
 <% BuyedInfoBean infoBean = (BuyedInfoBean) session.getAttribute("salesBean"); %>
 <%if(infoBean.getArraySize() > 0) { %>
 
@@ -51,20 +51,20 @@ if(roleBean == null || !roleBean.getRole().equals("producer")) {
 			<tr class="item">
 				<td><%=bean.getItemId() %></td>
 				<td><%=bean.getConsumerId() %></td>
-				<td><%=bean.getPrice() %></td>
+				<td><%=bean.getPrice() %>円</td>
 				<td><%=bean.getQuantity() %></td>
-				<td><%=bean.getPrice() * bean.getQuantity() %></td>
+				<td><%=bean.getPrice() * bean.getQuantity() %>円</td>
 				<% total = total + (bean.getPrice() * bean.getQuantity()); %>
 			</tr>
 			<% } %>
 		</tbody>
 	</table>
-合計<%=total %>
+<p class="total">合計:<%=total %>円</p>
 <%} else {%>
 	売り上げ情報は存在しません。
 <% } %>
 
-<script type="text/javascript" src="../../js/w3.js"></script>
-<script src="../../js/header-7.js"></script>
+<script type="text/javascript" src="js/w3.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

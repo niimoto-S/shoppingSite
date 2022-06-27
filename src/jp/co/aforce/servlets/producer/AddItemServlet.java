@@ -20,39 +20,29 @@ import jp.co.aforce.parameters.ItemInfoParameter;
 import jp.co.aforce.parameters.MessageParameter;
 import jp.co.aforce.util.NullCheck;
 
-/**
- * Servlet implementation class AddItemServlet
- */
+
 @WebServlet("/addItemServlet")
 @MultipartConfig
 public class AddItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public AddItemServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/views/producer/addItem.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 		if(roleBean == null || !roleBean.getRole().equals("producer")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			String itemName = request.getParameter("item_name");
 			String origin = request.getParameter("origin");
@@ -64,12 +54,12 @@ public class AddItemServlet extends HttpServlet {
 			String c = check.itemCheck(itemName, origin, unit, price, explanation);
 			if(!c.equals("")) {
 				session.setAttribute("addItemMessage", c + MessageParameter.MESSAGE);
-				response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+				request.getRequestDispatcher("/views/producer/addItem.jsp").forward(request, response);
 			} else {
 				Part part = request.getPart("image");
 				if(part.getSize() == 0) {
 					session.setAttribute("addItemMessage", ItemInfoParameter.IMAGE_STR + MessageParameter.MESSAGE);
-					response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+					request.getRequestDispatcher("/views/producer/addItem.jsp").forward(request, response);
 				} else {
 					if(part.getContentType().equals("image/png") || part.getContentType().equals("image/jpeg")) {
 						int priceInt = Integer.parseInt(price);
@@ -85,15 +75,15 @@ public class AddItemServlet extends HttpServlet {
 						try {
 							itemDAO.addItem(itemBean);
 							session.setAttribute("addItemMessage", MessageParameter.ADD_COMPLETE);
-							response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+							request.getRequestDispatcher("/views/producer/addItem.jsp").forward(request, response);
 						} catch (Exception e) {
 							session.setAttribute("addItemMessage", MessageParameter.SYSTEM_ERROR);
-							response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+							request.getRequestDispatcher("/views/producer/addItem.jsp").forward(request, response);
 							e.printStackTrace();
 						}
 					} else {
 						session.setAttribute("addItemMessage", ItemInfoParameter.IMAGE_CONTENT_TYPE_STR);
-						response.sendRedirect("/ShoppingSite/views/producer/addItem.jsp");
+						request.getRequestDispatcher("/views/producer/addItem.jsp").forward(request, response);
 					}
 
 

@@ -8,10 +8,10 @@
 <head>
 <meta charset="UTF-8">
 <title>購入履歴</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/table2.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/table2.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -58,20 +58,20 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 				<td><%=beanEx.getOrigin() %></td>
 				<td><%=beanEx.getQuantity() %></td>
 				<td><%=beanEx.getUnit() %></td>
-				<td><%=beanEx.getPrice() %></td>
+				<td><%=beanEx.getPrice() %>円</td>
 				<td><%=beanEx.getExplanation() %></td>
-				<td><img src="../../img/<%=beanEx.getImage() %>" width="250px" height="250px"></td>
-				<td><%=beanEx.getQuantity() * beanEx.getPrice() %>
+				<td><img src="img/<%=beanEx.getImage() %>" width="250px" height="250px"></td>
+				<td><%=beanEx.getQuantity() * beanEx.getPrice() %>円</td>
 				<%total = total + (beanEx.getQuantity() * beanEx.getPrice()); %>
 			</tr>
 		<% } %>
 		</tbody>
 	</table>
-	購入合計金額:<%=total %>
+	<p class="total">合計:<%=total %>円</p>
 
 <%}else{ %>
 	購入履歴がありません。
 <%} %>
-<script src="../../js/header-7.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>

@@ -13,24 +13,16 @@ import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
-/**
- * Servlet implementation class SearchServlet
- */
+
 @WebServlet("/searchItemServlet")
 public class SearchItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public SearchItemServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
@@ -51,18 +43,16 @@ public class SearchItemServlet extends HttpServlet {
 
 			try {
 				session.setAttribute("itemInfoBean", itemDAO.searchItem(keyword, userId));
-				response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
+				request.getRequestDispatcher("/views/producer/search_item.jsp").forward(request, response);
 			} catch (Exception e) {
 				session.setAttribute("searchItemMessage", MessageParameter.SYSTEM_ERROR);
-				response.sendRedirect("/ShoppingSite/views/producer/search_item.jsp");
+				request.getRequestDispatcher("/views/producer/search_item.jsp").forward(request, response);
 				e.printStackTrace();
 			}
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

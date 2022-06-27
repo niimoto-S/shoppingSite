@@ -13,31 +13,23 @@ import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
-/**
- * Servlet implementation class AdminSearchItemServlet
- */
+
 //doGetでkeywordを受け取り商品検索をする。
 @WebServlet("/adminSearchItemServlet")
 public class AdminSearchItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public AdminSearchItemServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
 		if(bean == null || !bean.getRole().equals("admin")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			String itemName;
 			try {
@@ -52,10 +44,10 @@ public class AdminSearchItemServlet extends HttpServlet {
 			try {
 				session.setAttribute("itemInfoBean", itemDAO.adminSearchItem(itemName));
 				session.setAttribute("itemName", itemName);
-				response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
+				request.getRequestDispatcher("/views/admin/adminItemSearch.jsp").forward(request, response);
 			} catch (Exception e) {
 				session.setAttribute("adminSearchItemMessage", MessageParameter.SYSTEM_ERROR);
-				response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
+				request.getRequestDispatcher("/views/admin/adminItemSearch.jsp").forward(request, response);
 				e.printStackTrace();
 			}
 		}
@@ -64,9 +56,7 @@ public class AdminSearchItemServlet extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

@@ -14,34 +14,24 @@ import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.beans.UserBean;
 import jp.co.aforce.models.LoginDAO;
 import jp.co.aforce.mySQL.MySQLError;
+import jp.co.aforce.parameters.MessageParameter;
 import jp.co.aforce.util.NullCheck;
 
-/**
- * Servlet implementation class AddUserServlet
- */
 @WebServlet("/addUserServlet")
 public class AddUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public AddUserServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/views/login/addUser.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
@@ -62,8 +52,8 @@ public class AddUserServlet extends HttpServlet {
 		String c = check.addUserCheck(lastName, firstName, sex, id, password, role, year, month, day, phoneNumber, mailAddress);
 
 		if(!c.equals("")) {
-			session.setAttribute("addUserMessage", c);
-			response.sendRedirect("/ShoppingSite/views/login/addUser.jsp");
+			session.setAttribute("addUserMessage", c + MessageParameter.MESSAGE);
+			request.getRequestDispatcher("/views/login/addUser.jsp").forward(request, response);
 		} else {
 			//Beanに情報を
 			int yearInt = Integer.parseInt(year);
@@ -74,15 +64,15 @@ public class AddUserServlet extends HttpServlet {
 			LoginDAO loginDAO = new LoginDAO();
 			try {
 				loginDAO.addUser(userBean, roleBean);
-				session.setAttribute("addUserMessage", "登録完了しました。");
-				response.sendRedirect("/ShoppingSite/views/login/addUser.jsp");
+				session.setAttribute("addUserMessage", MessageParameter.ADD_COMPLETE);
+				request.getRequestDispatcher("/views/login/addUser.jsp").forward(request, response);
 			} catch (SQLException e) {
 				session.setAttribute("addUserMessage", MySQLError.getMessage(e.getErrorCode()));
 				e.printStackTrace();
-				response.sendRedirect("/ShoppingSite/views/login/addUser.jsp");
+				request.getRequestDispatcher("/views/login/addUser.jsp").forward(request, response);
 			} catch (Exception e) {
-				session.setAttribute("addUserMessage", "システムエラー:管理者に報告してください");
-				response.sendRedirect("/ShoppingSite/views/login/addUser.jsp");
+				session.setAttribute("addUserMessage", MessageParameter.SYSTEM_ERROR);
+				request.getRequestDispatcher("/views/login/addUser.jsp").forward(request, response);
 				e.printStackTrace();
 			}
 			//データベースに情報を入れる

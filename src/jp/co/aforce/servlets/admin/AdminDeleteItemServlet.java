@@ -13,38 +13,28 @@ import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.ItemDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
-/**
- * Servlet implementation class AdminDeleteItemServlet
- */
+
 @WebServlet("/adminDeleteItemServlet")
 public class AdminDeleteItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public AdminDeleteItemServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/views/admin/adminItemSearch.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean bean = (RoleBean) session.getAttribute("userInfo");
 		if(bean == null || !bean.getRole().equals("admin")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			String itemId = request.getParameter("deleteItem");
 			ItemDAO dao = new ItemDAO();
@@ -52,10 +42,11 @@ public class AdminDeleteItemServlet extends HttpServlet {
 				String itemName = session.getAttribute("itemName").toString();
 				dao.deleteItemById(Integer.parseInt(itemId));
 				session.setAttribute("itemInfoBean", dao.adminSearchItem(itemName));
-				response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
+				session.setAttribute("adminSearchItemMessage", MessageParameter.DELETE_COMPLETE);
+				request.getRequestDispatcher("/views/admin/adminItemSearch.jsp").forward(request, response);
 			} catch (Exception e) {
 				session.setAttribute("adminSearchItemMessage", MessageParameter.SYSTEM_ERROR);
-				response.sendRedirect("/ShoppingSite/views/admin/adminItemSearch.jsp");
+				request.getRequestDispatcher("/views/admin/adminItemSearch.jsp").forward(request, response);
 				e.printStackTrace();
 			}
 		}

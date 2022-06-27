@@ -14,38 +14,27 @@ import jp.co.aforce.beans.RoleBean;
 import jp.co.aforce.models.CartDAO;
 import jp.co.aforce.parameters.MessageParameter;
 
-/**
- * Servlet implementation class BuyedServlet
- */
+
 @WebServlet("/buyedServlet")
 public class BuyedServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public BuyedServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=" + "UTF-8");
 		HttpSession session = request.getSession();
 		RoleBean roleBean = (RoleBean)session.getAttribute("userInfo");
 		if(roleBean == null || !roleBean.getRole().equals("consumer")) {
-			response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+			request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 		} else {
 			request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
 			CartDAO cartDAO = new CartDAO();
@@ -53,11 +42,11 @@ public class BuyedServlet extends HttpServlet {
 				cartDAO.buyItems((MyBasketInfoBean)session.getAttribute("myBasket"), roleBean.getId());
 				session.setAttribute("cartMessage", MessageParameter.BUY_CART_COMPLETE);
 				request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-				response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
+				request.getRequestDispatcher("/views/consumer/consumer_cart.jsp").forward(request, response);
 			} catch (Exception e) {
 				session.setAttribute("cartMessage", MessageParameter.SYSTEM_ERROR);
 				request.getRequestDispatcher("/myCartInfoServlet").include(request, response);
-				response.sendRedirect("/ShoppingSite/views/consumer/consumer_cart.jsp");
+				request.getRequestDispatcher("/views/consumer/consumer_cart.jsp").forward(request, response);
 				e.printStackTrace();
 			}
 		}

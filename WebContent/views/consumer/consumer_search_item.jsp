@@ -8,12 +8,12 @@
 <head>
 <meta charset="UTF-8">
 <title>商品検索</title>
-<link rel="stylesheet" href="../../css/reset2.css" />
-<link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/header-7.css" />
-<link rel="stylesheet" href="../../css/form2.css" />
-<link rel="stylesheet" href="../../css/button.css" />
-<link rel="stylesheet" href="../../css/table.css" />
+<link rel="stylesheet" href="css/reset2.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/header-7.css" />
+<link rel="stylesheet" href="css/form2.css" />
+<link rel="stylesheet" href="css/button.css" />
+<link rel="stylesheet" href="css/table.css" />
 </head>
 <body>
 <jsp:include page="header.html" ></jsp:include>
@@ -21,7 +21,7 @@
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
 if(roleBean == null || !roleBean.getRole().equals("consumer")) {
-	response.sendRedirect("/ShoppingSite/views/login/login.jsp");
+	request.getRequestDispatcher("/views/login/login.jsp").forward(request, response);
 }
 %>
 
@@ -35,7 +35,7 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 <%} catch (Exception e) {} %>
 
 <br><p style="font-size: 40px">商品名検索</p><br>
-<form action="../../searchAllServlet" method="get">
+<form action="searchAllServlet" method="get">
 
 	<div class="cp_iptxt container">
 		<input class="ef" type="text" name="itemName" placeholder="">
@@ -73,9 +73,9 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 				<%=bean.getUnit() %></td>
 				<td><%=bean.getPrice() %>円</td>
 				<td class="exp"><%=bean.getExplanation() %></td>
-				<td><img alt="<%=bean.getImageName() %>" src="../../img/<%=bean.getImageName() %>" height="250px" width="250px"></td>
+				<td><img alt="<%=bean.getImageName() %>" src="img/<%=bean.getImageName() %>" height="250px" width="250px"></td>
 				<td>
-				<form action="../../addCartServlet" method="post" id="test<%=bean.getItemId() %>">
+				<form action="addCartServlet" method="post" id="test<%=bean.getItemId() %>">
 					<input type="hidden" name="addItem" value="<%=bean.getItemId() %>">
 
 					<div class="container">
@@ -87,8 +87,8 @@ if(roleBean == null || !roleBean.getRole().equals("consumer")) {
 		</tbody>
 	</table>
 
-<script type="text/javascript" src="../../js/confirm.js"></script>
-<script type="text/javascript" src="../../js/hidden.js"></script>
-<script src="../../js/header-7.js"></script>
+<script type="text/javascript" src="js/confirm.js"></script>
+<script type="text/javascript" src="js/hidden.js"></script>
+<script src="js/header-7.js"></script>
 </body>
 </html>
