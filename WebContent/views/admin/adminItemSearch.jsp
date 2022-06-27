@@ -9,8 +9,15 @@
 <head>
 <meta charset="UTF-8">
 <title>商品検索</title>
+<link rel="stylesheet" href="../../css/reset2.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/header-7.css" />
+<link rel="stylesheet" href="../../css/form2.css" />
+<link rel="stylesheet" href="../../css/button.css" />
+<link rel="stylesheet" href="../../css/table2.css" />
 </head>
 <body>
+<jsp:include page="header.html" ></jsp:include>
 <%@page import="jp.co.aforce.beans.RoleBean"%>
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
@@ -28,18 +35,17 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 
 <%} catch (Exception e) {} %>
 
-商品検索
-
-<p><a href="admin_menu.jsp">
-    	<button type="button">戻る</button>
-</a></p>
 
 <% ItemInfoBean infoBean = (ItemInfoBean) session.getAttribute("itemInfoBean"); %>
 <% if(infoBean.getArraySize() > 0) { %>
-	商品名検索<br>
+<br><p style="font-size: 40px">商品名検索</p><br>
 	<form action="../../adminSearchItemServlet" method="get">
-		<input type="text" name="itemName">
-		<input type="submit" value="検索">
+		<div class="cp_iptxt container">
+			<input class="ef" type="text" name="itemName" placeholder="">
+			<label>商品名</label>
+			<span class="focus_line"></span>
+			<input type="submit" class="btn-border" value="検索">
+		</div>
 	</form>
 
 	<table border="1">
@@ -78,5 +84,6 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 	</table>
 <% } %>
 <script type="text/javascript" src="../../js/confirm.js"></script>
+<script src="../../js/header-7.js"></script>
 </body>
 </html>

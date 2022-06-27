@@ -68,12 +68,12 @@ public class LoginServlet extends HttpServlet {
 				} else if(roleBean.getRole().equals("producer") && roleBean.getAccountStatus().equals("enable")) {
 					session.setAttribute("userInfo", roleBean);
 					session.setAttribute("userName", name);
-					response.sendRedirect("/ShoppingSite/views/producer/producer_menu.jsp");
+					request.getRequestDispatcher("/searchItemServlet").forward(request, response);
 				//管理者
 				} else if(roleBean.getRole().equals("admin") && roleBean.getAccountStatus().equals("enable")) {
 					session.setAttribute("userInfo", roleBean);
 					session.setAttribute("userName", name);
-					response.sendRedirect("/ShoppingSite/views/admin/admin_menu.jsp");
+					request.getRequestDispatcher("/adminSearchItemServlet").forward(request, response);
 				//アカウント削除
 				} else {
 					session.setAttribute("loginMessage", MessageParameter.DISABLE_ERROR);

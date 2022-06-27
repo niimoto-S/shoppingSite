@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+.errorNumber {
+	font-size: 300px;
+	text-align: center;
+}
+
+.errorTitle {
+	font-size: 200px;
+	text-align: center;
+}
+
+.errorMessage {
+	font-size: 100px;
+	text-align: center;
+}

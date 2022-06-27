@@ -8,9 +8,15 @@
 <head>
 <meta charset="UTF-8">
 <title>ユーザ検索</title>
+<link rel="stylesheet" href="../../css/reset2.css" />
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/header-7.css" />
+<link rel="stylesheet" href="../../css/button.css" />
+<link rel="stylesheet" href="../../css/table3.css" />
+<link rel="stylesheet" href="../../css/form2.css" />
 </head>
 <body>
-
+<jsp:include page="header.html" ></jsp:include>
 <%@page import="jp.co.aforce.beans.RoleBean"%>
 <%
 RoleBean roleBean = (RoleBean) session.getAttribute("userInfo");
@@ -28,16 +34,15 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 
 <%} catch (Exception e) {} %>
 
-ユーザ検索
-
-<p><a href="admin_menu.jsp">
-    	<button type="button">戻る</button>
-</a></p>
-
-ユーザID検索<br>
+<br><p style="font-size: 40px">ユーザID検索</p><br>
 	<form action="../../adminSearchUserServlet" method="get">
-		<input type="text" name="userId">
-		<input type="submit" value="検索">
+
+		<div class="cp_iptxt container">
+			<input class="ef" type="text" name="userId" placeholder="">
+			<label>ユーザID</label>
+			<span class="focus_line"></span>
+		<input type="submit" class="btn-border" value="検索">
+		</div>
 	</form>
 <% UserInfoBeanEx infoBeanEx = (UserInfoBeanEx) session.getAttribute("userInfoBean"); %>
 <% if(infoBeanEx.getArraySize() > 0) {%>
@@ -83,5 +88,6 @@ if(roleBean == null || !roleBean.getRole().equals("admin")) {
 
 <%} else { %>検索結果がありません。<%} %>
 <script type="text/javascript" src="../../js/confirm.js"></script>
+<script src="../../js/header-7.js"></script>
 </body>
 </html>
